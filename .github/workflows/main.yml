@@ -4,6 +4,7 @@ on:
   push:
     branches: ["main"]
   workflow_dispatch:
+
 jobs:
   ci:
     runs-on: ubuntu-latest
@@ -28,7 +29,7 @@ jobs:
           file: ./src/Dockerfile
           tags: |
             rafaelbiasotto/fake-shop:latest
-            rafaelbiasotto/fake-shop:v${{ github.run_number}}
+            rafaelbiasotto/fake-shop:v${{ github.run_number }}
 
   cd:
     runs-on: ubuntu-latest
@@ -37,25 +38,16 @@ jobs:
       - name: Obter o código do projeto
         uses: actions/checkout@v4
 
-        on: [push]
+      - name: Login no Azure
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Run Azure Login With a Service Principal Secret
+      - name: Verificar conta Azure
+        uses: azure/cli@v2
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az account show
 
-      jobs:
-
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    steps:
-
-    - uses: azure/login@v2
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-    - name: Azure CLI script
-      uses: azure/cli@v2
-      with:
-        azcliversion: latest
-        inlineScript: |
-          az account show
-      
-
+     
