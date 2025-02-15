@@ -50,4 +50,5 @@ jobs:
           inlineScript: |
             az account show
 
-     
+      - name: Configurar o kubectl para acessar o AKS
+        run: az aks get-credentials --resource-group rg-aks-devops-poc --name aks-devops-poc
