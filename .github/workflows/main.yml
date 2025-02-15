@@ -37,14 +37,13 @@ jobs:
       - name: Obter o código do projeto
         uses: actions/checkout@v4
 
-      - name: Run Azure Login with OIDC
+        name: Run Azure Login with OIDC
         on: [push]
-
-        permissions:
+    permissions:
           id-token: write
           contents: read
 
-        jobs:
+    jobs:
           build-and-deploy:
             runs-on: ubuntu-latest
             steps:
@@ -68,7 +67,7 @@ jobs:
                 with:
                   azPSVersion: "latest"
                   inlineScript: |
-                  Get-AzContext
+                    Get-AzContext
 
       - name: Configurar o kubectl
         run: echo "Executando o comando kubectl"
